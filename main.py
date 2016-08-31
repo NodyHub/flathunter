@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 __author__ = "Jan Harrie"
-__license__ = "-/-"
-__version__ = "0.1"
+__version__ = "0.4"
 __maintainer__ = "Jan Harrie"
 __email__ = "harrymcfly@protonmail.com"
 __status__ = "Development"
