@@ -40,6 +40,20 @@ I coded this stuff while it is horrible to find an appartment in muc!!
 
 	Designed by Jan Harrie (c) harrymcfly@protonmail.com
 
+Example Output
+	$ ./main.py -v 239_____________________CMtCKSPu7KIhg 1XXXXX090 https://www.immobilienscout24.de/Suche/S-T/Wohnung-Miete/Bayern/Muenchen/-/XXXXXXXXXXXXXXXXXg
+	[2016/08/31 21:58:40|main.py           |INFO    ]: Start Immoscout Crawler
+	[2016/08/31 21:58:40|main.py           |INFO    ]: Process URL no.#0
+	[2016/08/31 21:58:40|main.py           |DEBUG   ]: https://www.immobilienscout24.de/Suche/S-T/Wohnung-Miete/Bayern/Muenchen/-/XXXXXXXXXXXXXXXXXg
+	[2016/08/31 21:58:50|main.py           |INFO    ]: 0 new offer found
+	[2016/08/31 21:58:50|main.py           |INFO    ]: Process URL no.#1
+	[2016/08/31 21:58:50|main.py           |DEBUG   ]: wg-gesucht
+	[2016/08/31 21:58:50|main.py           |INFO    ]: Stopped Immoscout Crawler
+	[2016/08/31 21:58:50|main.py           |DEBUG   ]: Start WG-Gesucht Crawler
+	[2016/08/31 21:59:04|main.py           |INFO    ]: 0 new offer found
+	[2016/08/31 21:59:04|main.py           |INFO    ]: Stopped WG-Gesucht Crawler
+
+
 And crawl like a Boss
 
-	while do ./main.py  239_____________________CMtCKSPu7KIhg 1XXXXX090 https://www.immobilienscout24.de/Suche/S-T/Wohnung-Miete/Bayern/Muenchen/-/XXXXXXXXXXXXXXXXX ; echo "sleep 600"; sleep 600;  done
+	while do ./main.py  239_____________________CMtCKSPu7KIhg 1XXXXX090 https://www.immobilienscout24.de/Suche/S-T/Wohnung-Miete/Bayern/Muenchen/-/XXXXXXXXXXXXXXXXXg ; echo "sleep 600"; sleep 600;  done
