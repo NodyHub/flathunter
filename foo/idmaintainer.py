@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*-
+__author__ = "Jan Harrie"
+__version__ = "0.1"
+__maintainer__ = "Jan Harrie"
+__email__ = "harrymcfly@protonmail.com"
+__status__ = "Prodction"
+
 import sqlite3 as lite
 import sys
 

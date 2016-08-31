@@ -1,8 +1,15 @@
 #!/bin/env python2.7
 # -*- coding: utf-8 -*-
 
+__author__ = "Jan Harrie"
+__license__ = "-/-"
+__version__ = "0.1"
+__maintainer__ = "Jan Harrie"
+__email__ = "harrymcfly@protonmail.com"
+__status__ = "Development"
+
 import argparse, os, logging
-from webscraping 	import webkit
+from webscraping 		import webkit
 from foo.immocrawler	import ImmoCrawler
 from foo.wgcrawler		import WGGesuchtCrawler
 from foo.idmaintainer	import IdMaintainer
