@@ -21,18 +21,18 @@ Telegram for python2.7 (https://github.com/liluo/telegram)
 
 ## Usage
 
-usage: main.py [-h] [-v] Bot-Token User-ID URL [URL ...]
+   usage: main.py [-h] [-v] Bot-Token User-ID URL [URL ...]
 
-Crawls Immobilienscout24.de and sends results to Telegram User
+   Crawls Immobilienscout24.de and sends results to Telegram User
 
-positional arguments:
-  Bot-Token      The secret token of the Telegram Bot
-  User-ID        ID of the Telegram User
-  URL            An URL to Immobilienscout24.de search result
+   positional arguments:
+     Bot-Token      The secret token of the Telegram Bot
+     User-ID        ID of the Telegram User
+     URL            An URL to Immobilienscout24.de search result
 
-optional arguments:
-  -h, --help     show this help message and exit
-  -v, --verbose  Enable Verbose output
+   optional arguments:
+     -h, --help     show this help message and exit
+     -v, --verbose  Enable Verbose output
 
-Designed by Jan Harrie (c) harrymcfly@protonmail.com
+   Designed by Jan Harrie (c) harrymcfly@protonmail.com
 
