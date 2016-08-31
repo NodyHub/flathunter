@@ -41,6 +41,7 @@ I coded this stuff while it is horrible to find an appartment in muc!!
 	Designed by Jan Harrie (c) harrymcfly@protonmail.com
 
 Example Output
+
 	$ ./main.py -v 239_____________________CMtCKSPu7KIhg 1XXXXX090 https://www.immobilienscout24.de/Suche/S-T/Wohnung-Miete/Bayern/Muenchen/-/XXXXXXXXXXXXXXXXXg
 	[2016/08/31 21:58:40|main.py           |INFO    ]: Start Immoscout Crawler
 	[2016/08/31 21:58:40|main.py           |INFO    ]: Process URL no.#0
