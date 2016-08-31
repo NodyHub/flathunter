@@ -7,8 +7,12 @@ I coded this stuff while it's fucking horrible to find an appartment in muc!!
 - [X] Telegram Notifier
 - [X] Datastorage to store processed IDs
 - [X] Immobilienscout24 Crawler
-- [X] WG-Gesucht Crawler
-- [ ] Ebay kleinanzeigen Crawler
+- [ ] WG-Gesucht Crawler
+   - [X] Initial Crawler
+   - [ ] Definition of Parameter
+   - [ ] Optional enble/disable
+- [ ] Ebay Kleinanzeigen Crawler
+
 
 ## Required
 Telegram for python2.7 (https://github.com/liluo/telegram)
