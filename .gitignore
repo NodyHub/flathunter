@@ -87,3 +87,6 @@ ENV/
 
 # Rope project settings
 .ropeproject
+
+.webkit_cache/
+processed_ids.db
