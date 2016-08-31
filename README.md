@@ -4,11 +4,11 @@
 I coded this stuff while it's fucking horrible to find an appartment in muc!! 
 
 ## Status
-[X] Telegram Notifier
-[X] Datastorage to store processed IDs
-[X] Immobilienscout24 Crawler
-[X] WG-Gesucht Crawler
-[ ] Ebay kleinanzeigen Crawler
+- [X] Telegram Notifier
+- [X] Datastorage to store processed IDs
+- [X] Immobilienscout24 Crawler
+- [X] WG-Gesucht Crawler
+- [ ] Ebay kleinanzeigen Crawler
 
 ## Required
 Telegram for python2.7 (https://github.com/liluo/telegram)
