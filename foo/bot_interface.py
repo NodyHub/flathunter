@@ -1,4 +1,8 @@
-# -*- coding: utf-8 -*-
+__author__ = "Jan Harrie"
+__version__ = "0.2"
+__maintainer__ = "Jan Harrie"
+__email__ = "harrymcfly@protonmail.com"
+__status__ = "Prodction"
 
 from telegram import Bot
 import logging

@@ -1,4 +1,4 @@
-# py_flathunt
+# Python Flathunter-Helper
 
 ## WTF!?
 I coded this stuff while it's fucking horrible to find an appartment in muc!!
@@ -15,9 +15,11 @@ I coded this stuff while it's fucking horrible to find an appartment in muc!!
 
 
 ## Required
-Telegram for python2.7 (https://github.com/liluo/telegram)
+Webscraping for Python2.7 (http://bitbucket.org/richardpenman/webscraping)
+Telegram for Python2.7 (https://github.com/liluo/telegram)
 
-   pip2.7 install telegram
+	pip2.7 install telegram
+	pip2.7 install webscraping
 
 ## Usage
 

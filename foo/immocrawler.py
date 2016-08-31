@@ -1,4 +1,9 @@
-# -*- coding: utf-8 -*-
+__author__ = "Jan Harrie"
+__license__ = "-/-"
+__version__ = "0.2"
+__maintainer__ = "Jan Harrie"
+__email__ = "harrymcfly@protonmail.com"
+__status__ = "Production"
 
 from webscraping import common, xpath
 from time import sleep
