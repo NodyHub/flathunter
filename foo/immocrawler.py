@@ -11,7 +11,7 @@ from unicodedata import normalize
 
 #~ Logging KungFoo
 import logging
-log = logging.getLogger(__name__)
+log = logging.getLogger()
 
 #~ log.addHandler(custom_logger.MyHandler())
 
@@ -42,12 +42,17 @@ class ImmoCrawler:
 
 		# iterat over other pages
 		while len(entrys) < no_of_results:
-			next_page = xpath.search(html, '//div[@id="pager"]/div[@class="grid-item five-twelfths grid-item-fixed-width align-right"]/a/@href')[0]
-			next_page = 'https://www.immobilienscout24.de' + str(next_page)
-			html = self.get_page_html(next_page)
-			data = self.extract_data(html)
-			entrys.extend(data)
-			log.debug('greped: ' + str(len(entrys)))
+			next_page = xpath.search(html, '//div[@id="pager"]/div[@class="grid-item five-twelfths grid-item-fixed-width align-right"]/a/@href')
+			if len(next_page) > 0 :
+				log.debug('Next Page')
+				next_page = next_page[0]
+				next_page = 'https://www.immobilienscout24.de' + str(next_page)
+				html = self.get_page_html(next_page)
+				data = self.extract_data(html)
+				entrys.extend(data)
+				log.debug('greped: ' + str(len(entrys)))
+			else:
+				break
 
 		return entrys
 
