@@ -10,7 +10,7 @@ from unicodedata import normalize
 
 #~ Logging KungFoo
 import logging
-log = logging.getLogger(__name__)
+log = logging.getLogger()
 
 
 class WGGesuchtCrawler:
@@ -46,8 +46,8 @@ class WGGesuchtCrawler:
 		self.BROWSER.js('changeSth();')
 
 		log.debug('Go search for it')
-		self.BROWSER.click('button[id=search]')
-		self.BROWSER.wait(4)
+		self.BROWSER.click('button[id=apply_filter]')
+		self.BROWSER.wait(3)
 
 		log.debug('Analyze Result')
 		html = self.BROWSER.current_html()

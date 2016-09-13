@@ -21,7 +21,7 @@ coff = '\033[0m'
 logging.basicConfig(
 		format='[' + cblue + '%(asctime)s' + coff + '|' + cblue + '%(filename)-18s' + coff+ '|' + cyellow + '%(levelname)-8s' + coff + ']: %(message)s',
 		datefmt='%Y/%m/%d %H:%M:%S')
-log = logging.getLogger(__name__)
+log = logging.getLogger()
 
 
 def main(args):
