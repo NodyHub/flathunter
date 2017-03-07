@@ -1,8 +1,5 @@
 # Python Flathunter-Helper
 
-## WTF!?
-I coded this stuff while it is horrible to find an appartment in muc!!
-
 ## Status
 - [X] Telegram Notifier
 - [X] Datastorage to store processed IDs
