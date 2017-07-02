@@ -4,15 +4,15 @@ import sys
 # ~ Logging KungFoo
 import logging
 
-__author__ = "Jan Harrie"
+__author__ = "Nody"
 __version__ = "0.1"
-__maintainer__ = "Jan Harrie"
+__maintainer__ = "Nody"
 __email__ = "harrymcfly@protonmail.com"
 __status__ = "Prodction"
 
 
 class IdMaintainer:
-    __log__ = logging.getLogger()
+    __log__ = logging.getLogger(__name__)
 
     def __init__(self, db_name):
         self.CON = None
