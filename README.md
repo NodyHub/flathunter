@@ -2,31 +2,24 @@
 
 ## Setup
 
-### Virtual Environment
-Install 
+### Virtual Environment (Optional)
+To keep you python requirements clean, it is recommended to run the
+-project in a virtual environment. Install ```virtualenv```, create a
+venv and activate
 ```
 $ pip install virtualenv
-```
-
-Swith in project directory and create a virtual environment
-```
 $ virtualenv -p /usr/bin/python3.6 venv
-```
-
-Activate virtual environment
-```
 $ source venv/bin/activate
 ```
 
 
 ### Requirements
-Install requirements (with acvtivated venv)
+Install requirements from ```requirements.txt``` to run execute flathunter properly.
 ```
 pip install -r requirements.txt
 ```
 
 ## Usage
-
 ```
 usage: flathunter.py [-h] [--config CONFIG]
 
