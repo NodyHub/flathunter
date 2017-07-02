@@ -2,7 +2,7 @@
 # Between each loop it waits for <sleeping_time> seconds.
 loop:
     active: yes
-    sleeping_time: 10
+    sleeping_time: 600
 
 # List the URLs containing your filter properties below.
 # Currently supported services: www.immobilienscout24.de and
@@ -79,6 +79,12 @@ google_maps_api:
 # access token of your bot and receiver_ids should list the client ids
 # of receivers. Note that those receivers are required to already have
 # started a conversation with your bot. 
+#
+# Example:
+#   bot_token: 160165XXXXXXX....
+#   receiver_ids:
+#       - 12345....
+#       - 67890....
 telegram:
     bot_token: 
     receiver_ids:
