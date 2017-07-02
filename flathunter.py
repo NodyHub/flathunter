@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 __author__ = "Jan Harrie"
@@ -7,12 +7,12 @@ __maintainer__ = "Jan Harrie"
 __email__ = "harrymcfly@protonmail.com"
 __status__ = "Production"
 
-import argparse, os, logging, time, requests, yaml, re, urllib.parse, requests
+import argparse, os, logging, time, yaml, re, urllib.parse, requests
 
 from flathunter.immosearch import ImmoSearcher
 from flathunter.wgsearch import WGSearcher
 from flathunter.idmaintainer import IdMaintainer
-import flathunter.util          as util
+import flathunter.util as util
 
 
 def hunt_flats(config, searchers, id_watch):
@@ -129,10 +129,10 @@ def main():
     # parse args
     parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and " \
                                                  "wg-gesucht.de and sends results to Telegram User",
-                                     epilog="Designed by Jan Harrie (c) harrymcfly@protonmail.com")
+                                     epilog="Designed by Nody")
     parser.add_argument('--config', '-c', type=argparse.FileType('r', encoding='UTF-8'),
-                        default='./config.yaml', help="Config file to use. If not set, ./comfig.yaml " \
-                                                      "is used. ")
+                        default='%s/config.yaml' % os.path.dirname(os.path.abspath(__file__)),
+                        help="Config file to use. If not set, try to use '%s/config.yaml' " % os.path.dirname(os.path.abspath(__file__)))
     args = parser.parse_args()
 
     # load config
