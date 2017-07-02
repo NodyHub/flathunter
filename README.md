@@ -3,9 +3,9 @@
 ## Setup
 
 ### Virtual Environment (Optional)
-To keep you python requirements clean, it is recommended to run the
--project in a virtual environment. Install ```virtualenv```, create a
-venv and activate
+To keep you python environment and site-packages clean, it is recommended
+to run the project in a virtual environment. Install ```virtualenv```,
+create a venv and activate.
 ```
 $ pip install virtualenv
 $ virtualenv -p /usr/bin/python3.6 venv
