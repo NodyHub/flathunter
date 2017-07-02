@@ -21,20 +21,20 @@ __email__ = "harrymcfly@protonmail.com"
 __status__ = "Production"
 
 # init logging
-cyellow = '\033[93m'
-cblue = '\033[94m'
-coff = '\033[0m'
 if os.name == 'posix':
-    logging.basicConfig(
-        format='[' + cblue + '%(asctime)s' + coff + '|' + cblue + '%(filename)-18s' + coff + '|' + cyellow +
-               '%(levelname)-8s' + coff + ']: %(message)s',
-        datefmt='%Y/%m/%d %H:%M:%S',
-        level=logging.INFO)
+    # coloring on linux
+    cyellow = '\033[93m'
+    cblue = '\033[94m'
+    coff = '\033[0m'
+    format = '[' + cblue + '%(asctime)s' + coff + '|' + cblue + '%(filename)-18s' + coff + '|' + cyellow + \
+             '%(levelname)-8s' + coff + ']: %(message)s'
 else:
-    logging.basicConfig(
-        format='[%(asctime)s|%(filename)-18s|%(levelname)-8s]: %(message)s',
-        datefmt='%Y/%m/%d %H:%M:%S',
-        level=logging.INFO)
+    # else without color
+    format = '[%(asctime)s|%(filename)-18s|%(levelname)-8s]: %(message)s',
+logging.basicConfig(
+    format=format,
+    datefmt='%Y/%m/%d %H:%M:%S',
+    level=logging.INFO)
 __log__ = logging.getLogger(__name__)
 
 
