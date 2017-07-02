@@ -92,3 +92,4 @@ ENV/
 processed_ids.db
 
 .idea/
+config.yaml

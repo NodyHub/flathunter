@@ -20,16 +20,32 @@ __maintainer__ = "Jan Harrie"
 __email__ = "harrymcfly@protonmail.com"
 __status__ = "Production"
 
+# init logging
+cyellow = '\033[93m'
+cblue = '\033[94m'
+coff = '\033[0m'
+if os.name == 'posix':
+    logging.basicConfig(
+        format='[' + cblue + '%(asctime)s' + coff + '|' + cblue + '%(filename)-18s' + coff + '|' + cyellow +
+               '%(levelname)-8s' + coff + ']: %(message)s',
+        datefmt='%Y/%m/%d %H:%M:%S',
+        level=logging.INFO)
+else:
+    logging.basicConfig(
+        format='[%(asctime)s|%(filename)-18s|%(levelname)-8s]: %(message)s',
+        datefmt='%Y/%m/%d %H:%M:%S',
+        level=logging.INFO)
+__log__ = logging.getLogger(__name__)
+
 
 def hunt_flats(config, searchers, id_watch):
-    logger = logging.getLogger()
     bot_token = config.get('telegram', dict()).get('bot_token', '')
     receiver_ids = config.get('telegram', dict()).get('receiver_ids', list())
     new_links = 0
     processed = id_watch.get()
 
     for url in config.get('urls', list()):
-        logger.debug('Processing URL: ' + url)
+        __log__.debug('Processing URL: ' + url)
 
         try:
             for searcher in searchers:
@@ -37,7 +53,7 @@ def hunt_flats(config, searchers, id_watch):
                     results = searcher.get_results(url)
                     break
         except requests.exceptions.ConnectionError:
-            logger.warning("Connection to %s failed. Retrying. " % url.split('/')[2])
+            __log__.warning("Connection to %s failed. Retrying. " % url.split('/')[2])
             continue
 
         # on error, stop execution
@@ -49,7 +65,7 @@ def hunt_flats(config, searchers, id_watch):
             if expose['id'] in processed:
                 continue
 
-            logger.info('New offer: ' + expose['title'])
+            __log__.info('New offer: ' + expose['title'])
 
             # to reduce traffic, some addresses need to be loaded on demand
             address = expose['address']
@@ -58,7 +74,7 @@ def hunt_flats(config, searchers, id_watch):
                 for searcher in searchers:
                     if re.search(searcher.URL_PATTERN, url):
                         address = searcher.load_address(url)
-                        logger.debug("Loaded address %s for url %s" % (address, url))
+                        __log__.debug("Loaded address %s for url %s" % (address, url))
                         break
 
             # calculdate durations
@@ -77,24 +93,22 @@ def hunt_flats(config, searchers, id_watch):
             new_links = new_links + 1
             id_watch.add(expose['id'])
 
-    logger.info(str(new_links) + ' new offer found')
+    __log__.info(str(new_links) + ' new offer found')
 
 
 def send_msg(bot_token, chat_id, message):
-    logger = logging.getLogger()
-
     url = 'https://api.telegram.org/%s/sendMessage?chat_id=%i&text=%s'
     text = urllib.parse.quote_plus(message.encode('utf-8'))
     qry = url % (bot_token, chat_id, text)
-    logger.debug("Retrieving URL %s" % qry)
+    __log__.debug("Retrieving URL %s" % qry)
     resp = requests.get(qry)
-    logger.debug("Got response (%i): %s" % (resp.status_code, resp.content))
+    __log__.debug("Got response (%i): %s" % (resp.status_code, resp.content))
     data = resp.json()
 
     # handle error
     if resp.status_code != 200:
         sc = resp.status_code
-        logger.error("When sending bot message, we got status %i with message: %s" % (sc, data))
+        __log__.error("When sending bot message, we got status %i with message: %s" % (sc, data))
 
 
 def get_formatted_durations(config, address):
@@ -122,16 +136,6 @@ def launch_flat_hunt(config):
 
 
 def main():
-    # init logging
-    cyellow = '\033[93m'
-    cblue = '\033[94m'
-    coff = '\033[0m'
-    logging.basicConfig(
-        format='[' + cblue + '%(asctime)s' + coff + '|' + cblue + '%(filename)-18s' + coff + '|' \
-               + cyellow + '%(levelname)-8s' + coff + ']: %(message)s',
-        datefmt='%Y/%m/%d %H:%M:%S', level=logging.INFO)
-    logger = logging.getLogger()
-
     # parse args
     parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and wg-gesucht.de and "
                                                  "sends results to Telegram User", epilog="Designed by Nody")
@@ -145,25 +149,25 @@ def main():
 
     # load config
     config_handle = args.config
-    logger.info("Using config %s" % config_handle.name)
+    __log__.info("Using config %s" % config_handle.name)
     config = yaml.load(config_handle.read())
 
     # check config
     if not config.get('telegram', dict()).get('bot_token'):
-        logger.error("No telegram bot token configured. Starting like this would be meaningless...")
+        __log__.error("No telegram bot token configured. Starting like this would be meaningless...")
         return
     if not config.get('telegram', dict()).get('receiver_ids'):
-        logger.error("No telegram receivers configured. Starting like this would be meaningless...")
+        __log__.error("No telegram receivers configured. Starting like this would be meaningless...")
         return
     if not config.get('urls'):
-        logger.error("No urls configured. Starting like this would be meaningless...")
+        __log__.error("No urls configured. Starting like this would be meaningless...")
         return
 
     # adjust log level, if required
     if config.get('verbose'):
-        logger.setLevel(logging.DEBUG)
+        __log__.setLevel(logging.DEBUG)
         from pprint import pformat
-        logger.debug("Settings from config: %s" % pformat(config))
+        __log__.debug("Settings from config: %s" % pformat(config))
 
     # start hunting for flats
     launch_flat_hunt(config)
