@@ -1,18 +1,24 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import argparse
+import os
+import logging
+import time
+import yaml
+import re
+import urllib.parse
+import requests
+import flathunter.util as util
+from flathunter.immosearch import ImmoSearcher
+from flathunter.wgsearch import WGSearcher
+from flathunter.idmaintainer import IdMaintainer
+
 __author__ = "Jan Harrie"
 __version__ = "1.0"
 __maintainer__ = "Jan Harrie"
 __email__ = "harrymcfly@protonmail.com"
 __status__ = "Production"
-
-import argparse, os, logging, time, yaml, re, urllib.parse, requests
-
-from flathunter.immosearch import ImmoSearcher
-from flathunter.wgsearch import WGSearcher
-from flathunter.idmaintainer import IdMaintainer
-import flathunter.util as util
 
 
 def hunt_flats(config, searchers, id_watch):
@@ -127,18 +133,20 @@ def main():
     logger = logging.getLogger()
 
     # parse args
-    parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and " \
-                                                 "wg-gesucht.de and sends results to Telegram User",
-                                     epilog="Designed by Nody")
-    parser.add_argument('--config', '-c', type=argparse.FileType('r', encoding='UTF-8'),
+    parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and wg-gesucht.de and "
+                                                 "sends results to Telegram User", epilog="Designed by Nody")
+    parser.add_argument('--config', '-c',
+                        type=argparse.FileType('r', encoding='UTF-8'),
                         default='%s/config.yaml' % os.path.dirname(os.path.abspath(__file__)),
-                        help="Config file to use. If not set, try to use '%s/config.yaml' " % os.path.dirname(os.path.abspath(__file__)))
+                        help="Config file to use. If not set, try to use '%s/config.yaml' " %
+                             os.path.dirname(os.path.abspath(__file__))
+                        )
     args = parser.parse_args()
 
     # load config
-    configHandle = args.config
-    logger.info("Using config %s" % configHandle.name)
-    config = yaml.load(configHandle.read())
+    config_handle = args.config
+    logger.info("Using config %s" % config_handle.name)
+    config = yaml.load(config_handle.read())
 
     # check config
     if not config.get('telegram', dict()).get('bot_token'):
