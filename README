@@ -29,7 +29,9 @@ to Telegram User
 optional arguments:
   -h, --help            show this help message and exit
   --config CONFIG, -c CONFIG
-                        Config file to use. If not set, $PROJECT_DIR/config.yaml is used.
+                        Config file to use. If not set, try to use
+                        '~git-clone-dir/config.yaml'
+
 ```
 
 ### Configuration
@@ -51,3 +53,5 @@ To use the distance calculation feature a [Google API-Key](https://developers.go
 - [@NodyHub](https://github.com/NodyHub)
 - Bene
 - [@Cugu](https://github.com/Cugu)
+
+
