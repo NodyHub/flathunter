@@ -3,7 +3,8 @@ import requests
 import re
 import urllib
 import datetime
-
+import time
+from flathunter.sender_telegram import SenderTelegram
 
 class Core:
     __log__ = logging.getLogger(__name__)
@@ -12,8 +13,7 @@ class Core:
     GM_MODE_DRIVING = 'driving'
 
     def hunt_flats(self, config, searchers, id_watch):
-        bot_token = config.get('telegram', dict()).get('bot_token', '')
-        receiver_ids = config.get('telegram', dict()).get('receiver_ids', list())
+        sender = SenderTelegram(config)
         new_links = 0
         processed = id_watch.get()
 
@@ -60,32 +60,31 @@ class Core:
                     durations=self.get_formatted_durations(config, address)).strip()
 
                 # send message to all receivers
-                for receiver_id in receiver_ids:
-                    self.send_msg(bot_token, receiver_id, message)
+                sender.send_msg(message)
 
                 new_links = new_links + 1
                 id_watch.add(expose['id'])
 
         self.__log__.info(str(new_links) + ' new offer found')
 
-    def get_formatted_durations(config, address):
+    def get_formatted_durations(self, config, address):
         out = ""
         for duration in config.get('durations', list()):
             if 'destination' in duration and 'name' in duration:
                 dest = duration.get('destination')
                 name = duration.get('name')
                 for mode in duration.get('modes', list()):
-                    if 'gm_id' in mode and 'title' in mode:
-                        duration = get_distance(config, address, dest, mode['gm_id'])
+                    if 'gm_id' in mode and 'title' in mode and 'key' in config.get('google_maps_api',dict()):
+                        duration = self.get_gmaps_distance(config, address, dest, mode['gm_id'])
                         out += "> %s (%s): %s\n" % (name, mode['title'], duration)
 
         return out.strip()
 
-    def get_distance(self, config, address, dest, mode):
+    def get_gmaps_distance(self, config, address, dest, mode):
         # get timestamp for next monday at 9:00:00 o'clock
         now = datetime.datetime.today().replace(hour=9,minute=0,second=0)
         next_monday = now + datetime.timedelta(days=(7-now.weekday()))
-        arrival_time = str(int(datetime.time.mktime(next_monday.timetuple())))
+        arrival_time = str(int(time.mktime(next_monday.timetuple())))
 
         # decode from unicode and url encode addresses
         address = urllib.parse.quote_plus(address.strip().encode('utf8'))
