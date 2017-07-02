@@ -1,7 +1,5 @@
 # Python Flathunter-Helper
 
-Original from Jan Harrie, adopted by Bene
-
 ## Setup
 
 ### Virtual Environment
@@ -38,7 +36,10 @@ to Telegram User
 optional arguments:
   -h, --help            show this help message and exit
   --config CONFIG, -c CONFIG
-                        Config file to use. If not set, $PROJECT_DIR/comfig.yaml is used.
-
-Designed by Jan Harrie (c) harrymcfly@protonmail.com
+                        Config file to use. If not set, $PROJECT_DIR/config.yaml is used.
 ```
+
+## Contributers
+- @NodyHub
+- Bene
+- @Cugu
