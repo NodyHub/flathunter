@@ -32,6 +32,21 @@ optional arguments:
                         Config file to use. If not set, $PROJECT_DIR/config.yaml is used.
 ```
 
+### Configuration
+
+#### Bot registration
+A new bot can registered with the telegram chat with the [BotFather](https://telegram.me/BotFather).
+
+#### Chat-Ids
+To get the chat id, the [REST-Api](https://core.telegram.org/bots/api) of telegram can be used to fetch the received messages of the Bot.
+```
+$ curl https://api.telegram.org/bot[BOT-TOKEN]/getUpdates
+```
+
+#### Google API
+To use the distance calculation feature a [Google API-Key](https://developers.google.com/maps/documentation/javascript/get-api-key) is needed.
+
+
 ## Contributers
 - [@NodyHub](https://github.com/NodyHub)
 - Bene
