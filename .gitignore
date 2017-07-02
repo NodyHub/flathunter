@@ -90,3 +90,5 @@ ENV/
 
 .webkit_cache/
 processed_ids.db
+
+.idea/
