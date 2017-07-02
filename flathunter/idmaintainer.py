@@ -1,19 +1,19 @@
-__author__ = "Jan Harrie"
-__version__ = "0.1"
-__maintainer__ = "Jan Harrie"
-__email__ = "harrymcfly@protonmail.com"
-__status__ = "Prodction"
-
 import sqlite3 as lite
 import sys
 
 # ~ Logging KungFoo
 import logging
 
-log = logging.getLogger()
+__author__ = "Jan Harrie"
+__version__ = "0.1"
+__maintainer__ = "Jan Harrie"
+__email__ = "harrymcfly@protonmail.com"
+__status__ = "Prodction"
 
 
 class IdMaintainer:
+    __log__ = logging.getLogger()
+
     def __init__(self, db_name):
         self.CON = None
         try:
@@ -22,11 +22,11 @@ class IdMaintainer:
             cur.execute('CREATE TABLE IF NOT EXISTS processed (ID INTEGER)')
 
         except lite.Error as e:
-            log.error("Error %s:" % e.args[0])
+            self.__log__.error("Error %s:" % e.args[0])
             sys.exit(1)
 
     def add(self, expose_id):
-        log.debug('add(' + str(expose_id) + ')')
+        self.__log__.debug('add(' + str(expose_id) + ')')
         cur = self.CON.cursor()
         cur.execute('INSERT INTO processed VALUES(' + str(expose_id) + ')')
         self.CON.commit()
@@ -41,8 +41,8 @@ class IdMaintainer:
                 break
             res.append(row[0])
 
-        log.info('already processed: ' + str(len(res)))
-        log.debug(str(res))
+        self.__log__.info('already processed: ' + str(len(res)))
+        self.__log__.debug(str(res))
         return res
 
     def foo(self):

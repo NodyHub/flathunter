@@ -105,7 +105,7 @@ def get_formatted_durations(config, address):
             name = duration.get('name')
             for mode in duration.get('modes', list()):
                 if 'gm_id' in mode and 'title' in mode:
-                    duration = util.getDistance(config, address, dest, mode['gm_id'])
+                    duration = util.get_distance(config, address, dest, mode['gm_id'])
                     out += "> %s (%s): %s\n" % (name, mode['title'], duration)
 
     return out.strip()

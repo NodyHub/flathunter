@@ -4,7 +4,6 @@ import time
 import logging
 from datetime import datetime, timedelta
 
-
 GM_MODE_TRANSIT = 'transit'
 GM_MODE_BICYCLE = 'bicycling'
 GM_MODE_DRIVING = 'driving'
@@ -12,7 +11,7 @@ GM_MODE_DRIVING = 'driving'
 __logger__ = logging.getLogger(__name__)
 
 
-def getDistance(config, address, dest, mode):
+def get_distance(config, address, dest, mode):
     # get timestamp for next monday at 9:00:00 o'clock
     now = datetime.today().replace(hour=9,minute=0,second=0)
     nextMonday = now + timedelta(days=(7-now.weekday()))
@@ -28,7 +27,8 @@ def getDistance(config, address, dest, mode):
     gm_key = config.get('google_maps_api',dict()).get('key')
 
     if not gm_key and mode != GM_MODE_DRIVING:
-        __logger__.warning("No Google Maps API key configured and without using a mode different from 'driving' is not allowed. Downgrading to mode 'drinving' thus. ")
+        __logger__.warning("No Google Maps API key configured and without using a mode different from 'driving' is not "
+                           "allowed. Downgrading to mode 'drinving' thus. ")
         mode = 'driving'
         base_url = base_url.replace('&key={key}', '')
 

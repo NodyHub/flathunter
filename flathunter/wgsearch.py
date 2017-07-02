@@ -1,41 +1,42 @@
-import logging, requests, re
+import logging
+import requests
+import re
 from bs4 import BeautifulSoup
-
 
 class WGSearcher:
     URL_PATTERN = re.compile(r'https://www\.wg-gesucht\.de')
+    __log__ = logging.getLogger(__name__)
 
     def __init__(self):
-        self.logger = logging.getLogger(self.__class__.__name__)
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     def get_results(self, search_url):
-        self.logger.debug("Got search URL %s" % search_url)
+        self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page
         page_no = 0
         soup = self.get_page(search_url, page_no)
         no_of_pages = 0  # TODO get it from soup
-        self.logger.info('Found pages: ' + str(no_of_pages))
+        self.__log__.info('Found pages: ' + str(no_of_pages))
 
         # get data from first page
         entries = self.extract_data(soup)
-        self.logger.debug('Number of found entries: ' + str(len(entries)))
+        self.__log__.debug('Number of found entries: ' + str(len(entries)))
 
         # iterate over all remaining pages
         while (page_no + 1) < no_of_pages:  # page_no starts with 0, no_of_pages with 1
             page_no += 1
-            self.logger.debug('Checking page %i' % page_no)
+            self.__log__.debug('Checking page %i' % page_no)
             soup = self.get_page(search_url, page_no)
             entries.extend(self.extract_data(soup))
-            self.logger.debug('Number of found entries: ' + str(len(entries)))
+            self.__log__.debug('Number of found entries: ' + str(len(entries)))
 
         return entries
 
     def get_page(self, search_url, page_no):
         resp = requests.get(search_url)  # TODO add page_no in url
         if resp.status_code != 200:
-            self.logger.error("Got response (%i): %s" % (resp.status_code, resp.content))
+            self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
         return BeautifulSoup(resp.content, 'html.parser')
 
     def extract_data(self, soup):
@@ -70,7 +71,7 @@ class WGSearcher:
             }
             entries.append(details)
 
-        self.logger.debug('extracted: ' + str(entries))
+        self.__log__.debug('extracted: ' + str(entries))
 
         return entries
 

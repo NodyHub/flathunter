@@ -1,13 +1,12 @@
 import logging, requests, re
-from time import sleep
 from bs4 import BeautifulSoup
 
 
 class ImmoSearcher:
     URL_PATTERN = re.compile(r'https://www\.immobilienscout24\.de')
+    __log__ = logging.getLogger(__name__)
 
     def __init__(self):
-        self.logger = logging.getLogger(self.__class__.__name__)
         logging.getLogger("requests").setLevel(logging.WARNING)
 
     def get_results(self, search_url):
@@ -16,7 +15,7 @@ class ImmoSearcher:
             search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-%i", search_url)
         else:
             search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-%i/", search_url)
-        self.logger.debug("Got search URL %s" % search_url)
+        self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page to get number of entries
         page_no = 1
@@ -24,14 +23,14 @@ class ImmoSearcher:
         no_of_results = int(
             soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[
                 0].text)
-        self.logger.info('Number of results: ' + str(no_of_results))
+        self.__log__.info('Number of results: ' + str(no_of_results))
 
         # get data from first page
         entries = self.extract_data(soup)
 
         # iterate over all remaining pages
         while len(entries) < no_of_results:
-            self.logger.debug('Next Page')
+            self.__log__.debug('Next Page')
             page_no += 1
             soup = self.get_page(search_url, page_no)
             entries.extend(self.extract_data(soup))
@@ -41,7 +40,7 @@ class ImmoSearcher:
     def get_page(self, search_url, page_no):
         resp = requests.get(search_url % page_no)
         if resp.status_code != 200:
-            self.logger.error("Got response (%i): %s" % (resp.status_code, resp.content))
+            self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
         return BeautifulSoup(resp.content, 'html.parser')
 
     def extract_data(self, soup):
@@ -67,5 +66,5 @@ class ImmoSearcher:
             }
             entries.append(details)
 
-        self.logger.debug('extracted: ' + str(entries))
+        self.__log__.debug('extracted: ' + str(entries))
         return entries
