@@ -6,7 +6,7 @@ import datetime
 import time
 from flathunter.sender_telegram import SenderTelegram
 
-class Core:
+class Hunter:
     __log__ = logging.getLogger(__name__)
     GM_MODE_TRANSIT = 'transit'
     GM_MODE_BICYCLE = 'bicycling'
