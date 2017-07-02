@@ -20,7 +20,7 @@ class IdMaintainer:
 			cur = self.CON.cursor()
 			cur.execute('CREATE TABLE IF NOT EXISTS processed (ID INTEGER)')
 
-		except lite.Error, e:
+		except lite.Error as e:
 			log.error("Error %s:" % e.args[0])
 			sys.exit(1)
 
