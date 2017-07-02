@@ -40,6 +40,6 @@ optional arguments:
 ```
 
 ## Contributers
-- @NodyHub
+- [@NodyHub](https://github.com/NodyHub)
 - Bene
-- @Cugu
+- [@Cugu](https://github.com/Cugu)
