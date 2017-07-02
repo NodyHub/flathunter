@@ -80,7 +80,7 @@ google_maps_api:
 # of receivers. Note that those receivers are required to already have
 # started a conversation with your bot. 
 #
-# Example:
+# telegram:
 #   bot_token: 160165XXXXXXX....
 #   receiver_ids:
 #       - 12345....
