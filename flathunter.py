@@ -127,7 +127,7 @@ def get_formatted_durations(config, address):
 
 def launch_flat_hunt(config):
     searchers = [ImmoSearcher(), WGSearcher()]
-    id_watch = IdMaintainer('./processed_ids.db')
+    id_watch = IdMaintainer('%s/processed_ids.db' % os.path.dirname(os.path.abspath(__file__)))
 
     hunt_flats(config, searchers, id_watch)
     while config.get('loop', dict()).get('active', False):
