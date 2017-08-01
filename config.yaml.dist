@@ -68,16 +68,23 @@ message: |
 # Below you can configure the URL to access the API, with placeholders.
 # The URL should most probably just kept like that. 
 # To use the Google Maps API, an API key is required. You can obtain one
-# without costs from the Google App Console (just google for it).
+# without costs from the Google App Console 
+# (https://developers.google.com/maps/documentation/javascript/get-api-key).
 google_maps_api:
     key: YOUR_API_KEY
     url: https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={dest}&mode={mode}&sensor=true&key={key}&arrival_time={arrival}
 
 # Sending messages using Telegram requires a Telegram Bot configured. 
+# A new bot can registered with the telegram chat with the BotFather 
+# (https://telegram.me/BotFather).
 # Telegram.org offers a good documentation about how to create a bot.
 # Once you read it, will make sense. Still: bot_token should hold the
-# access token of your bot and receiver_ids should list the client ids
-# of receivers. Note that those receivers are required to already have
+# access token of your bot and receiver_ids (= chat_ids) should list 
+# the chat ids of receivers. To get the chat id, the REST-Api 
+# (https://core.telegram.org/bots/api) of telegram can be used to 
+# fetch the received messages of the Bot (e.g. curl 
+# https://api.telegram.org/bot[BOT-TOKEN]/getUpdates).
+# Note that those receivers are required to already have
 # started a conversation with your bot. 
 #
 # telegram:
