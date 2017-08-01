@@ -4,15 +4,12 @@ A python crawler which crawls Immobilienscout24.de and wg-gesucht.de for new app
 
 ## Setup
 
-### Install requirements
 Install requirements from ```requirements.txt``` to run execute flathunter properly.
 ```
 pip install -r requirements.txt
 ```
 
-### Adapt config.yaml
 Rename ```config.yaml.dist``` to ```config.yaml``` and go through it to adapt it to your needs.
-
 
 ## Usage
 ```
