@@ -116,10 +116,10 @@ class Hunter:
                     self.__log__.warning("For address %s we got the status message: %s" % (address,element['status']))
                     self.__log__.debug("We got this result: %s" % repr(result))
                     continue
-                    self.__log__.debug("Got distance and duration: %s / %s (%i seconds)"
-                                       % (element['distance']['text'], element['duration']['text'],
-                                          element['duration']['value'])
-                                       )
+                self.__log__.debug("Got distance and duration: %s / %s (%i seconds)"
+                                   % (element['distance']['text'], element['duration']['text'],
+                                      element['duration']['value'])
+                                   )
                 distances[element['duration']['value']] = '%s (%s)' % \
                                                           (element['duration']['text'], element['distance']['text'])
         return distances[min(distances.keys())] if distances else None
