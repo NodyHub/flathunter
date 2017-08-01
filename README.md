@@ -1,23 +1,18 @@
-# Python Flathunter-Helper
+# Flathunter
+
+A python crawler which crawls Immobilienscout24.de and wg-gesucht.de for new appartments and sends the results to a Telegram user
 
 ## Setup
 
-### Virtual Environment (Optional)
-To keep you python environment and site-packages clean, it is recommended
-to run the project in a virtual environment. Install ```virtualenv```,
-create a venv and activate.
-```
-$ pip install virtualenv
-$ virtualenv -p /usr/bin/python3.6 venv
-$ source venv/bin/activate
-```
-
-
-### Requirements
+### Install requirements
 Install requirements from ```requirements.txt``` to run execute flathunter properly.
 ```
 pip install -r requirements.txt
 ```
+
+### Adapt config.yaml
+Rename ```config.yaml.dist``` to ```config.yaml``` and go through it to adapt it to your needs.
+
 
 ## Usage
 ```
@@ -33,21 +28,6 @@ optional arguments:
                         '~git-clone-dir/config.yaml'
 
 ```
-
-### Configuration
-
-#### Bot registration
-A new bot can registered with the telegram chat with the [BotFather](https://telegram.me/BotFather).
-
-#### Chat-Ids
-To get the chat id, the [REST-Api](https://core.telegram.org/bots/api) of telegram can be used to fetch the received messages of the Bot.
-```
-$ curl https://api.telegram.org/bot[BOT-TOKEN]/getUpdates
-```
-
-#### Google API
-To use the distance calculation feature a [Google API-Key](https://developers.google.com/maps/documentation/javascript/get-api-key) is needed.
-
 
 ## Contributers
 - [@NodyHub](https://github.com/NodyHub)
