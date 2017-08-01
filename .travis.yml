@@ -13,4 +13,8 @@ python:
   - "3.7-dev" # 3.7 development branch
   - "nightly" # currently points to 3.7-dev
 # command to install dependencies
-install: "pip install -r requirements.txt"
+install: 
+  - "pip install -r requirements.txt"
+  - "pip install pylint"
+# command to run tests
+script: pylint -E flathunter
