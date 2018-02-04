@@ -47,7 +47,7 @@ class CrawlImmobilienscout:
         entries = []
 
         title_elements = soup.find_all(lambda e: e.has_attr('class') and 'result-list-entry__brand-title' in e['class'])
-        expose_ids = list(map(lambda e: int(e.parent['href'].split('/')[-1]), title_elements))
+        expose_ids = list(map(lambda e: int(e.parent['href'].split('/')[-1].replace('.html', '')), title_elements))
         expose_urls = list(map(lambda id: 'https://www.immobilienscout24.de/expose/' + str(id), expose_ids))
         attr_container_els = soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == "attributes")
         address_fields = soup.find_all(lambda e: e.has_attr('class') and 'result-list-entry__address' in e['class'])
