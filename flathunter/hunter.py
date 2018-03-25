@@ -1,10 +1,13 @@
-import logging
-import requests
-import re
-import urllib
 import datetime
+import logging
+import re
 import time
+import urllib
+
+import requests
+
 from flathunter.sender_telegram import SenderTelegram
+
 
 class Hunter:
     __log__ = logging.getLogger(__name__)
@@ -74,7 +77,7 @@ class Hunter:
                 dest = duration.get('destination')
                 name = duration.get('name')
                 for mode in duration.get('modes', list()):
-                    if 'gm_id' in mode and 'title' in mode and 'key' in config.get('google_maps_api',dict()):
+                    if 'gm_id' in mode and 'title' in mode and 'key' in config.get('google_maps_api', dict()):
                         duration = self.get_gmaps_distance(config, address, dest, mode['gm_id'])
                         out += "> %s (%s): %s\n" % (name, mode['title'], duration)
 
@@ -82,8 +85,8 @@ class Hunter:
 
     def get_gmaps_distance(self, config, address, dest, mode):
         # get timestamp for next monday at 9:00:00 o'clock
-        now = datetime.datetime.today().replace(hour=9,minute=0,second=0)
-        next_monday = now + datetime.timedelta(days=(7-now.weekday()))
+        now = datetime.datetime.today().replace(hour=9, minute=0, second=0)
+        next_monday = now + datetime.timedelta(days=(7 - now.weekday()))
         arrival_time = str(int(time.mktime(next_monday.timetuple())))
 
         # decode from unicode and url encode addresses
@@ -92,12 +95,12 @@ class Hunter:
         self.__log__.debug("Got address: %s" % address)
 
         # get google maps config stuff
-        base_url = config.get('google_maps_api',dict()).get('url')
-        gm_key = config.get('google_maps_api',dict()).get('key')
+        base_url = config.get('google_maps_api', dict()).get('url')
+        gm_key = config.get('google_maps_api', dict()).get('key')
 
         if not gm_key and mode != self.GM_MODE_DRIVING:
             self.__log__.warning("No Google Maps API key configured and without using a mode different from "
-                                    "'driving' is not allowed. Downgrading to mode 'drinving' thus. ")
+                                 "'driving' is not allowed. Downgrading to mode 'drinving' thus. ")
             mode = 'driving'
             base_url = base_url.replace('&key={key}', '')
 
@@ -113,14 +116,13 @@ class Hunter:
         for row in result['rows']:
             for element in row['elements']:
                 if 'status' in element and element['status'] != 'OK':
-                    self.__log__.warning("For address %s we got the status message: %s" % (address,element['status']))
+                    self.__log__.warning("For address %s we got the status message: %s" % (address, element['status']))
                     self.__log__.debug("We got this result: %s" % repr(result))
                     continue
-                    self.__log__.debug("Got distance and duration: %s / %s (%i seconds)"
-                                       % (element['distance']['text'], element['duration']['text'],
-                                          element['duration']['value'])
-                                       )
+                self.__log__.debug("Got distance and duration: %s / %s (%i seconds)"
+                                   % (element['distance']['text'], element['duration']['text'],
+                                      element['duration']['value'])
+                                   )
                 distances[element['duration']['value']] = '%s (%s)' % \
                                                           (element['duration']['text'], element['distance']['text'])
         return distances[min(distances.keys())] if distances else None
-
