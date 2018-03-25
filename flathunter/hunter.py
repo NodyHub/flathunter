@@ -14,6 +14,7 @@ class Hunter:
     GM_MODE_TRANSIT = 'transit'
     GM_MODE_BICYCLE = 'bicycling'
     GM_MODE_DRIVING = 'driving'
+    GM_MODE_WALKING = 'walking'
 
     def hunt_flats(self, config, searchers, id_watch):
         sender = SenderTelegram(config)

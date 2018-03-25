@@ -22,6 +22,7 @@ urls:
 # 	- "bicyle"
 #	- "transit" (public transport)
 #	- "driving"
+#   - "walking"
 # 
 # The example configuration below includes a place for
 # "John", located at the main train station of munich.
