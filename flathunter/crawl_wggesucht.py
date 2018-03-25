@@ -63,7 +63,7 @@ class CrawlWgGesucht:
             size = re.findall(r'\d{2,4}\sm²', size_price)[0]
 
             details = {
-                'id': url.split('.')[-2],
+                'id': int(url.split('.')[-2]),
                 'url': url,
                 'title': "%s ab dem %s" % (title, date),
                 'price': price,
