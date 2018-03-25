@@ -54,6 +54,10 @@ class Hunter:
                             self.__log__.debug("Loaded address %s for url %s" % (address, url))
                             break
 
+                # filter districts
+                blacklist = config.get('blacklist', list())
+                address = ' '.join(filter(lambda x: x not in blacklist, address.split()))
+
                 # calculdate durations
                 message = config.get('message', "").format(
                     title=expose['title'],

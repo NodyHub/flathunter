@@ -54,7 +54,7 @@ class CrawlImmobilienscout:
 
         for idx, title_el in enumerate(title_elements):
             attr_els = attr_container_els[idx].find_all('dd')
-            address = address_fields[idx].text.strip()
+            address = address_fields[idx].text.strip().replace(',', '')
             details = {
                 'id': expose_ids[idx],
                 'url': expose_urls[idx],
