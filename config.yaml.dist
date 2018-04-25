@@ -12,6 +12,12 @@ loop:
 # 	- https://www.wg-gesucht.de/...
 urls:
 
+# There are often city districts in the address which
+# Google Maps does not like. Use this blacklist to remove
+# districts from the search.
+blacklist:
+  - Innenstadt
+
 # If an expose includes an address, the bot is capable of
 # displaying the distance and time to travel (duration) to
 # some configured other addresses, for specific kinds of
@@ -22,6 +28,7 @@ urls:
 # 	- "bicyle"
 #	- "transit" (public transport)
 #	- "driving"
+#   - "walking"
 # 
 # The example configuration below includes a place for
 # "John", located at the main train station of munich.
