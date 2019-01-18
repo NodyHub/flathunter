@@ -12,9 +12,9 @@ class CrawlImmobilienscout:
     def get_results(self, search_url):
         # convert to paged URL
         if '/P-' in search_url:
-            search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-%i", search_url)
+            search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-{0}", search_url)
         else:
-            search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-%i/", search_url)
+            search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-{0}/", search_url)
         self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page to get number of entries
@@ -38,7 +38,7 @@ class CrawlImmobilienscout:
         return entries
 
     def get_page(self, search_url, page_no):
-        resp = requests.get(search_url % page_no)
+        resp = requests.get(search_url.format(page_no))
         if resp.status_code != 200:
             self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
         return BeautifulSoup(resp.content, 'html.parser')
