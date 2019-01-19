@@ -79,6 +79,10 @@ google_maps_api:
 # access token of your bot and receiver_ids should list the client ids
 # of receivers. Note that those receivers are required to already have
 # started a conversation with your bot. 
+# The token can be fetched over the API. At first, you need to send a 
+# message to the Bot and afterwards, the event can be fetched by the 
+# followinhg command:
+# $ https://api.telegram.org/bot<YourBOTToken>/getUpdates
 #
 # telegram:
 #   bot_token: 160165XXXXXXX....
