@@ -57,7 +57,7 @@ class CrawlEbayKleinanzeigen:
                 size = "Nicht gegeben"
                 print("Quadratmeter nicht angegeben")
             details = {
-                'id': expose_ids[idx].get("data-adid"),
+                'id': int(expose_ids[idx].get("data-adid")),
                 'url':  address ,
                 'title': title_el.text.strip(),
                 'price': price,
