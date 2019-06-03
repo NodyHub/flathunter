@@ -31,16 +31,16 @@ class CrawlEbayKleinanzeigen:
     def extract_data(self, soup):
         entries = []
         soup = soup.find(id="srchrslt-adtable")
-        title_elements = soup.find_all( lambda e: e.has_attr('class') and 'ellipsis' in e['class'])
+        try:
+            title_elements = soup.find_all( lambda e: e.has_attr('class') and 'ellipsis' in e['class'])
+        except AttributeError:
+            return entries
         expose_ids=soup.find_all("article", class_="aditem")
 
 
         #soup.find_all(lambda e: e.has_attr('data-adid'))
         #print(expose_ids)
         for idx,title_el in enumerate(title_elements):
-            print(title_el.text)
-            print(title_el.get("href"))
-            print(expose_ids[idx].get("data-adid"))
             price = expose_ids[idx].find("strong").text
             tags = expose_ids[idx].find_all(class_="simpletag tag-small")
             address = "https://www.ebay-kleinanzeigen.de/" +title_el.get("href")

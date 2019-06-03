@@ -55,15 +55,16 @@ class CrawlImmobilienscout:
         for idx, title_el in enumerate(title_elements):
             attr_els = attr_container_els[idx].find_all('dd')
             address = address_fields[idx].text.strip()
-            details = {
-                'id': expose_ids[idx],
-                'url': expose_urls[idx],
-                'title': title_el.text.strip().replace('NEU', ''),
-                'price': attr_els[0].text.strip().split(' ')[0].strip(),
-                'size': attr_els[1].text.strip().split(' ')[0].strip() + " qm",
-                'rooms': attr_els[2].text.strip().split(' ')[0].strip() + " Zi.",
-                'address': address
-            }
+            if(len(attr_els)>2) :
+                details = {
+                    'id': expose_ids[idx],
+                    'url': expose_urls[idx],
+                    'title': title_el.text.strip().replace('NEU', ''),
+                    'price': attr_els[0].text.strip().split(' ')[0].strip(),
+                    'size': attr_els[1].text.strip().split(' ')[0].strip() + " qm",
+                    'rooms': attr_els[2].text + " Zi.",
+                    'address': address
+                }
             entries.append(details)
 
         self.__log__.debug('extracted: ' + str(entries))
