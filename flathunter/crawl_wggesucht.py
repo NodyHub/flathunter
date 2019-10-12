@@ -89,5 +89,8 @@ class CrawlWgGesucht:
         # extract address from expose itself
         r = requests.get(url)
         flat = BeautifulSoup(r.content, 'lxml')
-        address = ' '.join(flat.find('div', {"class": "col-sm-4 mb10"}).find("a", {"href": "#"}).text.strip().split())
+        try:
+            address = ' '.join(flat.find('div', {"class": "col-sm-4 mb10"}).find("a", {"href": "#"}).text.strip().split())
+        except:
+            address = "?"
         return address
