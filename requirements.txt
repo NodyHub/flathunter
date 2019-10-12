@@ -6,3 +6,5 @@ idna==2.5
 PyYAML==3.12
 requests==2.18.1
 urllib3==1.21.1
+lxml==4.2.1
+python-dateutil==2.8.0

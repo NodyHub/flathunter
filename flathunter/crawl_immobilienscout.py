@@ -12,9 +12,9 @@ class CrawlImmobilienscout:
     def get_results(self, search_url):
         # convert to paged URL
         if '/P-' in search_url:
-            search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-%i", search_url)
+            search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-[pageno]", search_url)
         else:
-            search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-%i/", search_url)
+            search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-[pageno]/", search_url)
         self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page to get number of entries
@@ -29,16 +29,28 @@ class CrawlImmobilienscout:
         entries = self.extract_data(soup)
 
         # iterate over all remaining pages
-        while len(entries) < no_of_results:
+        num_empty_pages = 0
+        num_entries = len(entries)
+        while num_entries < no_of_results and num_empty_pages < 5:
             self.__log__.debug('Next Page')
             page_no += 1
             soup = self.get_page(search_url, page_no)
-            entries.extend(self.extract_data(soup))
+            new_entries = self.extract_data(soup)
+            num_entries += len(new_entries)
+
+            if new_entries == 0:
+                num_empty_pages += 1
+
+            entries.extend(new_entries)
 
         return entries
 
     def get_page(self, search_url, page_no):
-        resp = requests.get(search_url % page_no)
+        url = search_url.replace("[pageno]", str(page_no), 1)
+        return self.get_generic_page(url)
+
+    def get_generic_page(self, url):
+        resp = requests.get(url)
         if resp.status_code != 200:
             self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
         return BeautifulSoup(resp.content, 'html.parser')
@@ -68,3 +80,15 @@ class CrawlImmobilienscout:
 
         self.__log__.debug('extracted: ' + str(entries))
         return entries
+
+    def load_date(self, url):
+        # extract address from expose itself
+        soup = self.get_generic_page(url)
+
+        bezugsfrei_elements = soup.find_all(lambda e: e.has_attr("class") and "is24qa-bezugsfrei-ab" in e["class"])
+        bezugsfrei_date = "?"
+        if bezugsfrei_elements:
+            bezugsfrei_date = bezugsfrei_elements[0].text.strip()
+
+        return bezugsfrei_date
+
