@@ -70,7 +70,6 @@ class Hunter:
                 if not "date" in expose:
                     for searcher in searchers:
                         if re.search(searcher.URL_PATTERN, url):
-                            print(expose["url"])
                             expose["date"] = searcher.load_date(expose["url"])
                             self.__log__.debug("Loaded date {} for url {}".format(address, expose["url"]))
                             break
