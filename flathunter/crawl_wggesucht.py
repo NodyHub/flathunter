@@ -15,60 +15,69 @@ class CrawlWgGesucht:
         self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page
-        page_no = 0
-        soup = self.get_page(search_url, page_no)
-        no_of_pages = 0  # TODO get it from soup
-        self.__log__.info('Found pages: ' + str(no_of_pages))
+        soup = self.get_page(search_url)
+
+        # extract additional pages
+        page_urls = []
+        a_paginations = soup.find_all("a", class_="a-pagination")
+        for a_pagination in a_paginations:
+            # for each additional page
+            page_urls.append("https://www.wg-gesucht.de/" + a_pagination.get('href'))
+
+        self.__log__.info('Found pages: ' + str(len(page_urls)+1))
 
         # get data from first page
         entries = self.extract_data(soup)
         self.__log__.debug('Number of found entries: ' + str(len(entries)))
 
         # iterate over all remaining pages
-        while (page_no + 1) < no_of_pages:  # page_no starts with 0, no_of_pages with 1
-            page_no += 1
-            self.__log__.debug('Checking page %i' % page_no)
-            soup = self.get_page(search_url, page_no)
+        current_page_no = 2
+        for page_url in page_urls:
+            self.__log__.debug('Checking page %i' % current_page_no)
+            soup = self.get_page(page_url)
             entries.extend(self.extract_data(soup))
             self.__log__.debug('Number of found entries: ' + str(len(entries)))
+            current_page_no += 1
 
         return entries
 
-    def get_page(self, search_url, page_no):
-        resp = requests.get(search_url)  # TODO add page_no in url
+    def get_page(self, search_url):
+        # search_url must be specific page - cannot add page number manually
+        resp = requests.get(search_url)
         if resp.status_code != 200:
             self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
-        return BeautifulSoup(resp.content, 'html.parser')
+        return BeautifulSoup(resp.content, 'lxml')
 
     def extract_data(self, soup):
         entries = []
 
-        findings = soup.find_all(lambda e: e.has_attr('id') and e['id'].startswith('ad--'))
+        findings = soup.find_all(lambda e: e.has_attr('id') and e['id'].startswith('liste-'))
         existingFindings = list(
-            filter(lambda e: e.has_attr('class') and not 'listenansicht-inactive' in e['class'], findings))
+            filter(lambda e: e.has_attr('class') and not 'display-none' in e['class'], findings))
 
         baseurl = 'https://www.wg-gesucht.de/'
         for row in existingFindings:
-            url = baseurl + row['adid']  # u'wohnungen-in-Muenchen-Altstadt-Lehel.6038357.html'
-            id = int(url.split('.')[-2])
-            rooms = row.find(lambda e: e.has_attr('class') and 'ang_spalte_zimmer' in e['class']).text.strip()  # u'3'
-            price = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_miete' in e['class']).text.strip()  # u'433\u20ac'
-            size = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_groesse' in e['class']).text.strip()  # u'75m\xb2'
-            district = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_stadt' in e['class']).text.strip()  # u'Altstadt-Lehel'
-            date = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_freiab' in e['class']).text.strip()  # u'21.03.17'
+            infostring = row.find(
+                lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e[
+                    'class']).p.text.strip()
+            rooms = "1?"  # re.findall(r'\d[-]Zimmer[-]Wohnung', infostring)[0][:1]
+            date = re.findall(r'\d{2}.\d{2}.\d{4}', infostring)[0]
+            detail = row.find_all(lambda e: e.name == "a" and e.has_attr('class') and 'detailansicht' in e['class']);
+            title = detail[2].text.strip()
+            url = baseurl + detail[0]["href"]
+            size_price = detail[0].text.strip()
+            price = re.findall(r'\d{2,4}\s€', size_price)[0]
+            size = re.findall(r'\d{2,4}\sm²', size_price)[0]
 
             details = {
                 'id': int(url.split('.')[-2]),
                 'url': url,
-                'title': "Wohnung in %s ab dem %s" % (district, date),
+                'title': title,
                 'price': price,
                 'size': size,
                 'rooms': rooms + " Zi.",
-                'address': url
+                'address': url,
+                'date': date,
             }
             entries.append(details)
 
@@ -78,9 +87,10 @@ class CrawlWgGesucht:
 
     def load_address(self, url):
         # extract address from expose itself
-        exposeHTML = requests.get(url).content
-        exposeSoup = BeautifulSoup(exposeHTML, 'html.parser')
-        address_raw = exposeSoup.find(lambda e: e.has_attr('onclick') and '#map_tab' in e['onclick']).text
-        address = address_raw.strip().split('\n')[0] + ", " + address_raw.strip().split('\n')[-1].strip()
-
+        r = requests.get(url)
+        flat = BeautifulSoup(r.content, 'lxml')
+        try:
+            address = ' '.join(flat.find('div', {"class": "col-sm-4 mb10"}).find("a", {"href": "#"}).text.strip().split())
+        except:
+            address = "?"
         return address

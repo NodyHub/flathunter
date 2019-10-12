@@ -8,9 +8,15 @@ loop:
 # Currently supported services: www.immobilienscout24.de and
 # www.wg-gesucht.de. List the URLs in the following format:
 # urls:
-# 	- https://www.immobilienscout24.de/Suche/...
-# 	- https://www.wg-gesucht.de/...
+# 	- "https://www.immobilienscout24.de/Suche/..."
+# 	- "https://www.wg-gesucht.de/..."
 urls:
+
+# There are often city districts in the address which
+# Google Maps does not like. Use this blacklist to remove
+# districts from the search.
+blacklist:
+  - Innenstadt
 
 # If an expose includes an address, the bot is capable of
 # displaying the distance and time to travel (duration) to
@@ -22,6 +28,7 @@ urls:
 # 	- "bicyle"
 #	- "transit" (public transport)
 #	- "driving"
+#   - "walking"
 # 
 # The example configuration below includes a place for
 # "John", located at the main train station of munich.
@@ -29,21 +36,21 @@ urls:
 # each with a different label. Furthermore a place for
 # "Jane" is included, located at the given destination and
 # with the same kinds of travel.
-durations:
-    - name: John
-      destination: Hauptbahnhof, München
-      modes: 
-          - gm_id: transit
-            title: "Öff."
-          - gm_id: bicycle
-            title: "Rad"
-    - name: Jane
-      destination: Karlsplatz, München
-      modes: 
-          - gm_id: transit
-            title: "Öff."
-          - gm_id: driving
-            title: "Auto"
+#durations:
+#    - name: John
+#      destination: Hauptbahnhof, München
+#      modes:
+#          - gm_id: transit
+#            title: "Öff."
+#          - gm_id: bicycle
+#            title: "Rad"
+#    - name: Jane
+#      destination: Karlsplatz, München
+#      modes:
+#          - gm_id: transit
+#            title: "Öff."
+#          - gm_id: driving
+#            title: "Auto"
 
 # Multiline message (yes, the | is supposed to be there), 
 # to format the message received from the Telegram bot. 
@@ -54,15 +61,18 @@ durations:
 #	- {price}: Price for the flat
 # 	- {durations}: Durations calculated by GMaps, see above
 #	- {url}: URL to the expose
+#	- {address}: address of the flat
+#	- {date}: possible date of move
 message: |
-    {title}
+    {title} (ab {date})
     Zimmer: {rooms}
     Größe: {size}
     Preis: {price}
-    Anfahrt:
-    {durations}
+    Adresse: {address}
 
     {url}
+#    Anfahrt:
+#    {durations}
 
 # Calculating durations requires access to the Google Maps API. 
 # Below you can configure the URL to access the API, with placeholders.
@@ -92,3 +102,13 @@ google_maps_api:
 telegram:
     bot_token: 
     receiver_ids:
+
+# It is possible to filter entries by date of possible move. Three filters are available:
+# a minimum date, a maximum date and a blacklist. The blacklist is useful for dates
+# which cannot be parsed (e.g. "sofort").
+#date_filter:
+#    date_min: 2019-12-01
+#    date_max: 2020-01-01
+#    blacklist_phrases:
+#        - "sofort"
+date_filter:
