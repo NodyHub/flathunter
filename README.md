@@ -1,5 +1,7 @@
 # Python Flathunter-Helper
 
+[![Build Status](https://travis-ci.org/NodyHub/flathunter.svg?branch=master)](https://travis-ci.org/NodyHub/flathunter)
+
 ## Setup
 
 ### Virtual Environment (Optional)
