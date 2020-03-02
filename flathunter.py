@@ -53,7 +53,7 @@ def main():
     parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and wg-gesucht.de and "
                                                  "sends results to Telegram User", epilog="Designed by Nody")
     parser.add_argument('--config', '-c',
-                        type=argparse.FileType('r', encoding='UTF-8'),
+                        type=argparse.FileType('r'),
                         default='%s/config.yaml' % os.path.dirname(os.path.abspath(__file__)),
                         help="Config file to use. If not set, try to use '%s/config.yaml' " %
                              os.path.dirname(os.path.abspath(__file__))
