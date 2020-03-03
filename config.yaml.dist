@@ -2,14 +2,18 @@
 # Between each loop it waits for <sleeping_time> seconds.
 loop:
     active: yes
-    sleeping_time: 600
+    sleeping_time: 60
 
 # List the URLs containing your filter properties below.
-# Currently supported services: www.immobilienscout24.de and
-# www.wg-gesucht.de. List the URLs in the following format:
+# Currently supported services: www.immobilienscout24.de,
+# www.wg-gesucht.de.,ebay-kleinanzeigen.de, immowelt.de 
+# List the URLs in the following format:
 # urls:
 # 	- https://www.immobilienscout24.de/Suche/...
 # 	- https://www.wg-gesucht.de/...
+#
+#     IMMOWELT: Always sort after newest entries, => ?sort=createdate
+
 urls:
 
 
