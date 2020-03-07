@@ -11,10 +11,14 @@ class CrawlImmobilienscout:
 
     def get_results(self, search_url):
         # convert to paged URL
-        if '/P-' in search_url:
-            search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-{0}", search_url)
+        # if '/P-' in search_url:
+        #     search_url = re.sub(r"/Suche/(.+?)/P-\d+", "/Suche/\1/P-{0}", search_url)
+        # else:
+        #     search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-{0}/", search_url)
+        if '&pagenumber' in search_url:
+            search_url = re.sub(r"&pagenumber=1", "&pagenumber={0}", search_url)
         else:
-            search_url = re.sub(r"/Suche/(.+?)/", r"/Suche/\1/P-{0}/", search_url)
+            search_url = search_url = search_url + '&pagenumber=1'
         self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page to get number of entries
@@ -46,15 +50,26 @@ class CrawlImmobilienscout:
     def extract_data(self, soup):
         entries = []
 
-        title_elements = soup.find_all(lambda e: e.has_attr('class') and 'result-list-entry__brand-title' in e['class'])
-        expose_ids = list(map(lambda e: int(e.parent['href'].split('/')[-1].replace('.html', '')), title_elements))
-        expose_urls = list(map(lambda id: 'https://www.immobilienscout24.de/expose/' + str(id), expose_ids))
+        title_elements = soup.find_all(lambda e: e.name == 'a' and e.has_attr('class') and 'result-list-entry__brand-title-container' in e['class'])
+        expose_ids = []
+        expose_urls = []
+        for link in title_elements:
+            expose_id = int(link.get('href').split('/')[-1].replace('.html', ''))
+            expose_ids.append(expose_id)
+            if(len(str(expose_id)) > 5):
+                expose_urls.append('https://www.immobilienscout24.de/expose/' + str(expose_id))
+            else:
+                expose_urls.append(link.get('href'))
+        self.__log__.debug(expose_ids)
+
         attr_container_els = soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == "attributes")
         address_fields = soup.find_all(lambda e: e.has_attr('class') and 'result-list-entry__address' in e['class'])
-
         for idx, title_el in enumerate(title_elements):
             attr_els = attr_container_els[idx].find_all('dd')
-            address = address_fields[idx].text.strip()
+            try:
+                address = address_fields[idx].text.strip()
+            except:
+                address = "No address given"
             if(len(attr_els)>2) :
                 details = {
                     'id': expose_ids[idx],
