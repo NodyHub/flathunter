@@ -80,7 +80,17 @@ class CrawlImmobilienscout:
                     'rooms': attr_els[2].text + " Zi.",
                     'address': address
                 }
-            entries.append(details)
+            print entries
+            exist = False
+            for x in entries:
+                if(expose_id == x["id"]):
+                    exist = True
+                    break
+                else:
+                    continue
+            if(exist == False):
+                entries.append(details)
+            
 
         self.__log__.debug('extracted: ' + str(entries))
         return entries
