@@ -14,6 +14,13 @@ mv config.yaml.dist config.yaml
 nano config.yaml
 python flathunter.py
 ```
+## Run Forever
+
+To run flathunter indefinetly:
+
+```
+nohup python run_flathunter_forever.py &
+```
 
 ## Setup
 

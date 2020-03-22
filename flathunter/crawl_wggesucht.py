@@ -1,6 +1,9 @@
+# coding= UTF-8
+
 import logging
-import requests
 import re
+
+import requests
 from bs4 import BeautifulSoup
 
 
@@ -38,33 +41,37 @@ class CrawlWgGesucht:
         resp = requests.get(search_url)  # TODO add page_no in url
         if resp.status_code != 200:
             self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
-        return BeautifulSoup(resp.content, 'html.parser')
+        return BeautifulSoup(resp.content, 'lxml')
 
     def extract_data(self, soup):
         entries = []
 
-        findings = soup.find_all(lambda e: e.has_attr('id') and e['id'].startswith('ad--'))
+        findings = soup.find_all(lambda e: e.has_attr('id') and e['id'].startswith('liste-'))
         existingFindings = list(
-            filter(lambda e: e.has_attr('class') and not 'listenansicht-inactive' in e['class'], findings))
+            filter(lambda e: e.has_attr('class') and not 'display-none' in e['class'], findings))
 
         baseurl = 'https://www.wg-gesucht.de/'
-        for row in existingFindings:
-            url = baseurl + row['adid']  # u'wohnungen-in-Muenchen-Altstadt-Lehel.6038357.html'
-            id = int(url.split('.')[-2])
-            rooms = row.find(lambda e: e.has_attr('class') and 'ang_spalte_zimmer' in e['class']).text.strip()  # u'3'
-            price = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_miete' in e['class']).text.strip()  # u'433\u20ac'
-            size = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_groesse' in e['class']).text.strip()  # u'75m\xb2'
-            district = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_stadt' in e['class']).text.strip()  # u'Altstadt-Lehel'
-            date = row.find(
-                lambda e: e.has_attr('class') and 'ang_spalte_freiab' in e['class']).text.strip()  # u'21.03.17'
+
+        for index,row in enumerate(existingFindings):
+            print "Current Index is: "+ str(index) + "\n"
+            print row 
+            infostring = row.find(
+                lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e[
+                    'class']).p.text.strip()
+            print(infostring)
+            rooms = re.findall(r'\der WG', infostring)[0][:1]
+            date = re.findall(r'\d{2}.\d{2}.\d{4}', infostring)[0]
+            detail = row.find_all(lambda e: e.name == "a" and e.has_attr('class') and 'detailansicht' in e['class']);
+            title = detail[2].text.strip()
+            url = baseurl + detail[0]["href"]
+            size_price = detail[0].text.strip()
+            price = re.findall(r'\d{2,4}\s€', size_price)[0]
+            size = re.findall(r'\d{2,4}\sm²', size_price)[0]
 
             details = {
                 'id': int(url.split('.')[-2]),
                 'url': url,
-                'title': "Wohnung in %s ab dem %s" % (district, date),
+                'title': "%s ab dem %s" % (title, date),
                 'price': price,
                 'size': size,
                 'rooms': rooms + " Zi.",
@@ -78,9 +85,7 @@ class CrawlWgGesucht:
 
     def load_address(self, url):
         # extract address from expose itself
-        exposeHTML = requests.get(url).content
-        exposeSoup = BeautifulSoup(exposeHTML, 'html.parser')
-        address_raw = exposeSoup.find(lambda e: e.has_attr('onclick') and '#map_tab' in e['onclick']).text
-        address = address_raw.strip().split('\n')[0] + ", " + address_raw.strip().split('\n')[-1].strip()
-
+        r = requests.get(url)
+        flat = BeautifulSoup(r.content, 'lxml')
+        address = ' '.join(flat.find('div', {"class": "col-sm-4 mb10"}).find("a", {"href": "#"}).text.strip().split())
         return address

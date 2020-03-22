@@ -33,6 +33,7 @@ else:
 logging.basicConfig(
     filename='log.txt',
     format=format,
+    filemode='w',
     datefmt='%Y/%m/%d %H:%M:%S',
     level=logging.DEBUG)
 __log__ = logging.getLogger(__name__)

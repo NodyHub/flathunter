@@ -24,11 +24,11 @@ class CrawlImmobilienscout:
         # load first page to get number of entries
         page_no = 1
         soup = self.get_page(search_url, page_no)
-        no_of_results = int(
-            soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[
-                0].text)
-        self.__log__.info('Number of results: ' + str(no_of_results))
-
+        try:
+            no_of_results = int(soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[0].text)
+        except IndexError:
+            print "Index error occured"
+            no_of_results = int(soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[1].text)
         # get data from first page
         entries = self.extract_data(soup)
 
