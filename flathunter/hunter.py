@@ -64,5 +64,5 @@ class Hunter:
 
                 new_links = new_links + 1
                 id_watch.add(expose['id'])
-
+        print(str(new_links) + ' new offer found')
         self.__log__.info(str(new_links) + ' new offer found')

@@ -18,7 +18,7 @@ class CrawlImmobilienscout:
         if '&pagenumber' in search_url:
             search_url = re.sub(r"&pagenumber=1", "&pagenumber={0}", search_url)
         else:
-            search_url = search_url = search_url + '&pagenumber=1'
+            search_url = search_url + '?pagenumber={0}'
         self.__log__.debug("Got search URL %s" % search_url)
 
         # load first page to get number of entries
@@ -27,17 +27,19 @@ class CrawlImmobilienscout:
         try:
             no_of_results = int(soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[0].text)
         except IndexError:
-            print "Index error occured"
-            no_of_results = int(soup.find_all(lambda e: e.has_attr('data-is24-qa') and e['data-is24-qa'] == 'resultlist-resultCount')[1].text)
+            self.__log__.debug('Index Error occured')
         # get data from first page
         entries = self.extract_data(soup)
 
         # iterate over all remaining pages
         while len(entries) < no_of_results:
-            self.__log__.debug('Next Page')
+            self.__log__.debug('Next Page, Number of entries : ' + str(len(entries)) + "no of resulst: " + str(no_of_results))
             page_no += 1
             soup = self.get_page(search_url, page_no)
-            entries.extend(self.extract_data(soup))
+            cur_entry = self.extract_data(soup)
+            if cur_entry == []:
+                break
+            entries.extend(cur_entry)
 
         return entries
 
@@ -80,7 +82,7 @@ class CrawlImmobilienscout:
                     'rooms': attr_els[2].text + " Zi.",
                     'address': address
                 }
-            print entries
+            #print entries
             exist = False
             for x in entries:
                 if(expose_id == x["id"]):

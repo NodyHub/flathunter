@@ -53,12 +53,12 @@ class CrawlWgGesucht:
         baseurl = 'https://www.wg-gesucht.de/'
 
         for index,row in enumerate(existingFindings):
-            print "Current Index is: "+ str(index) + "\n"
-            print row 
+            #print "Current Index is: "+ str(index) + "\n"
+            #print row 
             infostring = row.find(
                 lambda e: e.name == "div" and e.has_attr('class') and 'list-details-panel-inner' in e[
                     'class']).p.text.strip()
-            print(infostring)
+            #print(infostring)
             rooms = re.findall(r'\der WG', infostring)[0][:1]
             date = re.findall(r'\d{2}.\d{2}.\d{4}', infostring)[0]
             detail = row.find_all(lambda e: e.name == "a" and e.has_attr('class') and 'detailansicht' in e['class']);

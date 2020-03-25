@@ -45,17 +45,17 @@ class CrawlEbayKleinanzeigen:
             tags = expose_ids[idx].find_all(class_="simpletag tag-small")
             address = "https://www.ebay-kleinanzeigen.de/" +title_el.get("href")
             try:
-                print(tags[0].text)
+                #(tags[0].text)
                 rooms = tags[0].text
             except IndexError:
-                print("Keine Zimmeranzahl gegeben")
+                #print("Keine Zimmeranzahl gegeben")
                 rooms = "Nicht gegeben"
             try:
-                print(tags[1].text)
+                #print(tags[1].text)
                 size = tags[1].text
             except IndexError:
                 size = "Nicht gegeben"
-                print("Quadratmeter nicht angegeben")
+                #print("Quadratmeter nicht angegeben")
             details = {
                 'id': int(expose_ids[idx].get("data-adid")),
                 'url':  address ,
