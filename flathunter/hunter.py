@@ -34,7 +34,8 @@ class Hunter:
             if not results:
                 break
 
-            for expose in results:
+            uniq_results = list({v['id']:v for v in results}.values())
+            for expose in uniq_results:
                 # check if already processed
                 if expose['id'] in processed:
                     continue
