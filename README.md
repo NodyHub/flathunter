@@ -1,5 +1,7 @@
 # Flathunter
 
+## The project is currently maintained by [flathunters](https://github.com/flathunters/flathunter) head over there to get a more up to date version
+
 ## Quick Setup
 ```
 sudo apt-get update
