@@ -11,6 +11,7 @@ from flathunter.crawl_wggesucht import CrawlWgGesucht
 from flathunter.idmaintainer import IdMaintainer
 from flathunter.hunter import Hunter
 from flathunter.crawl_ebaykleinanzeigen import CrawlEbayKleinanzeigen
+from flathunter.crawl_immowelt import CrawlImmoWelt
 
 __author__ = "Jan Harrie"
 __version__ = "1.0"
@@ -30,14 +31,16 @@ else:
     # else without color
     format = '[%(asctime)s|%(filename)-18s|%(levelname)-8s]: %(message)s',
 logging.basicConfig(
+    filename='log.txt',
     format=format,
+    filemode='w',
     datefmt='%Y/%m/%d %H:%M:%S',
     level=logging.DEBUG)
 __log__ = logging.getLogger(__name__)
 
 
 def launch_flat_hunt(config):
-    searchers = [CrawlImmobilienscout(), CrawlWgGesucht(),CrawlEbayKleinanzeigen()]
+    searchers = [CrawlImmobilienscout(), CrawlWgGesucht(),CrawlEbayKleinanzeigen(),CrawlImmoWelt()]
     id_watch = IdMaintainer('%s/processed_ids.db' % os.path.dirname(os.path.abspath(__file__)))
 
     hunter = Hunter()
@@ -53,7 +56,7 @@ def main():
     parser = argparse.ArgumentParser(description="Searches for flats on Immobilienscout24.de and wg-gesucht.de and "
                                                  "sends results to Telegram User", epilog="Designed by Nody")
     parser.add_argument('--config', '-c',
-                        type=argparse.FileType('r', encoding='UTF-8'),
+                        type=argparse.FileType('r'),
                         default='%s/config.yaml' % os.path.dirname(os.path.abspath(__file__)),
                         help="Config file to use. If not set, try to use '%s/config.yaml' " %
                              os.path.dirname(os.path.abspath(__file__))

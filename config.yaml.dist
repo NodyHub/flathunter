@@ -2,48 +2,20 @@
 # Between each loop it waits for <sleeping_time> seconds.
 loop:
     active: yes
-    sleeping_time: 600
+    sleeping_time: 60
 
 # List the URLs containing your filter properties below.
-# Currently supported services: www.immobilienscout24.de and
-# www.wg-gesucht.de. List the URLs in the following format:
+# Currently supported services: www.immobilienscout24.de,
+# www.wg-gesucht.de.,ebay-kleinanzeigen.de, immowelt.de 
+# List the URLs in the following format:
 # urls:
 # 	- https://www.immobilienscout24.de/Suche/...
 # 	- https://www.wg-gesucht.de/...
+#
+#     IMMOWELT: Always sort after newest entries, => ?sort=createdate
+
 urls:
 
-# If an expose includes an address, the bot is capable of
-# displaying the distance and time to travel (duration) to
-# some configured other addresses, for specific kinds of
-# travel.
-#  
-# Available kinds of travel ('gm_id') can be found in the
-# Google Maps API documentation, but basically there are:
-# 	- "bicyle"
-#	- "transit" (public transport)
-#	- "driving"
-# 
-# The example configuration below includes a place for
-# "John", located at the main train station of munich.
-# Two kinds of travel (bicycle and transit) are requested,
-# each with a different label. Furthermore a place for
-# "Jane" is included, located at the given destination and
-# with the same kinds of travel.
-durations:
-    - name: John
-      destination: Hauptbahnhof, München
-      modes: 
-          - gm_id: transit
-            title: "Öff."
-          - gm_id: bicycle
-            title: "Rad"
-    - name: Jane
-      destination: Karlsplatz, München
-      modes: 
-          - gm_id: transit
-            title: "Öff."
-          - gm_id: driving
-            title: "Auto"
 
 # Multiline message (yes, the | is supposed to be there), 
 # to format the message received from the Telegram bot. 
@@ -52,26 +24,14 @@ durations:
 # 	- {title}: The title of the expose
 #	- {rooms}: Number of rooms
 #	- {price}: Price for the flat
-# 	- {durations}: Durations calculated by GMaps, see above
 #	- {url}: URL to the expose
 message: |
     {title}
     Zimmer: {rooms}
     Größe: {size}
     Preis: {price}
-    Anfahrt:
-    {durations}
 
     {url}
-
-# Calculating durations requires access to the Google Maps API. 
-# Below you can configure the URL to access the API, with placeholders.
-# The URL should most probably just kept like that. 
-# To use the Google Maps API, an API key is required. You can obtain one
-# without costs from the Google App Console (just google for it).
-google_maps_api:
-    key: YOUR_API_KEY
-    url: https://maps.googleapis.com/maps/api/distancematrix/json?origins={origin}&destinations={dest}&mode={mode}&sensor=true&key={key}&arrival_time={arrival}
 
 # Sending messages using Telegram requires a Telegram Bot configured. 
 # Telegram.org offers a good documentation about how to create a bot.

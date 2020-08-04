@@ -1,9 +1,30 @@
-# Python Flathunter-Helper
+# Flathunter
+
+## The project is currently maintained by [flathunters](https://github.com/flathunters/flathunter) head over there to get a more up to date version
+
+## Quick Setup
+```
+sudo apt-get update
+sudo apt-get install wget
+wget https://github.com/tschuehly/flathunter/archive/master.zip
+sudo apt-get install unzip
+unzip master.zip
+cd flathunter-master
+sudo apt-get install python-pip
+pip install -r requirements.txt
+mv config.yaml.dist config.yaml
+nano config.yaml
+python flathunter.py
+```
+## Run Forever
+
+To run flathunter indefinetly:
+
+```
+nohup python run_flathunter_forever.py &
+```
 
 ## Setup
-
-
-
 
 
 ### Requirements
@@ -38,8 +59,9 @@ To get the chat id, the [REST-Api](https://core.telegram.org/bots/api) of telegr
 $ curl https://api.telegram.org/bot[BOT-TOKEN]/getUpdates
 ```
 
-#### Google API
-To use the distance calculation feature a [Google API-Key](https://developers.google.com/maps/documentation/javascript/get-api-key) is needed.
+#### Config File
+
+Rename the config.yaml.dist to config.yaml and fill as described.
 
 
 ## Contributers
