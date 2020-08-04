@@ -7,6 +7,8 @@ from bs4 import BeautifulSoup
 class CrawlEbayKleinanzeigen:
     __log__ = logging.getLogger(__name__)
     URL_PATTERN = re.compile(r'https://www\.ebay-kleinanzeigen\.de')
+    HEADERS = { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36'}
+    
 
     def __init__(self):
         logging.getLogger("requests").setLevel(logging.WARNING)
@@ -23,7 +25,7 @@ class CrawlEbayKleinanzeigen:
         return entries
 
     def get_page(self, search_url):
-        resp = requests.get(search_url)  # TODO add page_no in url
+        resp = requests.get(search_url, headers=self.HEADERS)  # TODO add page_no in url
         if resp.status_code != 200:
             self.__log__.error("Got response (%i): %s" % (resp.status_code, resp.content))
         return BeautifulSoup(resp.content, 'html.parser')
@@ -45,17 +47,17 @@ class CrawlEbayKleinanzeigen:
             tags = expose_ids[idx].find_all(class_="simpletag tag-small")
             address = "https://www.ebay-kleinanzeigen.de/" +title_el.get("href")
             try:
-                #(tags[0].text)
+                print(tags[0].text)
                 rooms = tags[0].text
             except IndexError:
-                #print("Keine Zimmeranzahl gegeben")
+                print("Keine Zimmeranzahl gegeben")
                 rooms = "Nicht gegeben"
             try:
-                #print(tags[1].text)
+                print(tags[1].text)
                 size = tags[1].text
             except IndexError:
                 size = "Nicht gegeben"
-                #print("Quadratmeter nicht angegeben")
+                print("Quadratmeter nicht angegeben")
             details = {
                 'id': int(expose_ids[idx].get("data-adid")),
                 'url':  address ,
